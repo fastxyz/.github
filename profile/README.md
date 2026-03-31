@@ -68,16 +68,23 @@ npm install @fastxyz/sdk
 ```
 
 ```typescript
-import { Fast } from '@fastxyz/sdk'
+import { FastProvider, FastWallet } from '@fastxyz/sdk';
 
-const fast = new Fast({ apiKey: 'your-api-key' })
+// 1. Create provider
+const provider = new FastProvider({ network: 'testnet' });
 
-// Send a payment — settles in <100ms
-const tx = await fast.pay({
-  to: 'agent-or-address',
-  amount: '1.00',
-  asset: 'USDC'
-})
+// 2. Create wallet
+const wallet = await FastWallet.fromKeyfile('~/.fast/keys/default.json', provider);
+
+// 3. Send tokens
+const result = await wallet.send({
+  to: 'fast1recipient...',
+  amount: '1.5',
+  token: 'testUSDC'
+});
+
+console.log('TX:', result.txHash);
+console.log('Explorer:', result.explorerUrl);
 ```
 
 📖 [Read the Docs](https://docs.fast.xyz) · 🔑 [Get API Access](https://fast.xyz) · 💬 [Join the Community](https://discord.gg/fast)
